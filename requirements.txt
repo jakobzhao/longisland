@@ -1,0 +1,31 @@
+# Core
+numpy>=1.26
+pandas>=2.1
+geopandas>=0.14
+shapely>=2.0
+pyarrow>=14.0
+
+# Census / ACS
+census>=0.8.22
+cenpy>=1.0
+
+# Spatial stats (PySAL family)
+libpysal>=4.9
+esda>=2.5
+splot>=1.1
+mgwr>=2.2
+
+# Stats / regression
+scipy>=1.11
+statsmodels>=0.14
+scikit-learn>=1.4
+
+# Routing / travel time
+requests>=2.31
+osmnx>=1.9          # fallback for network extraction if needed
+
+# Notebook
+jupyter>=1.0
+jupytext>=1.16
+papermill>=2.5      # for scheduled runs in CI
+python-dotenv>=1.0  # auto-loads .env for CENSUS_API_KEY etc.

@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nassau — Access &amp; Need Mismatch</title>
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" />
+  <link rel="stylesheet" href="./style.css" />
+  <script type="importmap">
+  {
+    "imports": {
+      "maplibre-gl": "https://esm.sh/maplibre-gl@4.7.1"
+    }
+  }
+  </script>
+</head>
+<body>
+  <div id="app">
+    <div id="map"></div>
+
+    <aside id="panel">
+      <header>
+        <h1>Nassau County<br><span>Access &amp; Need Mismatch</span></h1>
+        <div class="mode-switch">
+          <button data-mode="drive" class="active">15 min drive</button>
+          <button data-mode="walk">15 min walk</button>
+        </div>
+      </header>
+
+      <section class="gate">
+        <div class="gate-label">Validation gate</div>
+        <div id="gate-verdict">—</div>
+        <div id="gate-text" class="muted">—</div>
+      </section>
+
+      <section class="layers">
+        <div class="section-label">Map layer</div>
+        <label><input type="radio" name="layer" value="lisa" checked> LISA clusters (mismatch)</label>
+        <label><input type="radio" name="layer" value="mismatch_index"> Mismatch index</label>
+        <label><input type="radio" name="layer" value="need_score"> Need score</label>
+        <label><input type="radio" name="layer" value="access_score"> Access score</label>
+        <label><input type="radio" name="layer" value="poverty_rate"> Poverty rate</label>
+        <label><input type="checkbox" id="facilities-toggle" checked> Show facilities</label>
+        <label><input type="checkbox" id="districts-toggle"> Show K-12 homeless students (by district)</label>
+      </section>
+
+      <section id="legend">
+        <div class="section-label">Legend</div>
+        <div id="legend-body"></div>
+      </section>
+
+      <section id="tract-detail" class="empty">
+        <div class="section-label">Tract details</div>
+        <div id="detail-body" class="muted">Click a tract on the map.</div>
+      </section>
+
+      <footer>
+        <div class="muted small">
+          ACS 2022 5-year · HUD HIC 2024 · Island Harvest + LI Cares + OSM
+          <br>Methods &amp; caveats: see <a href="https://github.com/" target="_blank">README</a>
+        </div>
+      </footer>
+    </aside>
+  </div>
+
+  <script type="module" src="./main.js"></script>
+</body>
+</html>

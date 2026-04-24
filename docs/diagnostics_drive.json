@@ -1,0 +1,217 @@
+{
+  "mode": "drive",
+  "permutations": 999,
+  "p_threshold": 0.05,
+  "primary_weights": "queen",
+  "global_moran": [
+    {
+      "variable": "need_score",
+      "weights": "queen",
+      "I": 0.3175,
+      "EI": -0.0035,
+      "z_sim": 9.326,
+      "p_sim": 0.001
+    },
+    {
+      "variable": "need_score",
+      "weights": "knn5",
+      "I": 0.3195,
+      "EI": -0.0035,
+      "z_sim": 9.289,
+      "p_sim": 0.001
+    },
+    {
+      "variable": "need_score",
+      "weights": "dist3mi",
+      "I": 0.134,
+      "EI": -0.0035,
+      "z_sim": 7.296,
+      "p_sim": 0.001
+    },
+    {
+      "variable": "access_score",
+      "weights": "queen",
+      "I": 0.9356,
+      "EI": -0.0035,
+      "z_sim": 25.935,
+      "p_sim": 0.001
+    },
+    {
+      "variable": "access_score",
+      "weights": "knn5",
+      "I": 0.9444,
+      "EI": -0.0035,
+      "z_sim": 26.389,
+      "p_sim": 0.001
+    },
+    {
+      "variable": "access_score",
+      "weights": "dist3mi",
+      "I": 0.8335,
+      "EI": -0.0035,
+      "z_sim": 42.935,
+      "p_sim": 0.001
+    },
+    {
+      "variable": "mismatch_index",
+      "weights": "queen",
+      "I": 0.7308,
+      "EI": -0.0035,
+      "z_sim": 21.911,
+      "p_sim": 0.001
+    },
+    {
+      "variable": "mismatch_index",
+      "weights": "knn5",
+      "I": 0.7361,
+      "EI": -0.0035,
+      "z_sim": 21.382,
+      "p_sim": 0.001
+    },
+    {
+      "variable": "mismatch_index",
+      "weights": "dist3mi",
+      "I": 0.6168,
+      "EI": -0.0035,
+      "z_sim": 32.102,
+      "p_sim": 0.001
+    },
+    {
+      "variable": "rent_burden_rate",
+      "weights": "queen",
+      "I": 0.0737,
+      "EI": -0.0035,
+      "z_sim": 2.168,
+      "p_sim": 0.014
+    },
+    {
+      "variable": "rent_burden_rate",
+      "weights": "knn5",
+      "I": 0.0185,
+      "EI": -0.0035,
+      "z_sim": 0.602,
+      "p_sim": 0.278
+    },
+    {
+      "variable": "rent_burden_rate",
+      "weights": "dist3mi",
+      "I": 0.0261,
+      "EI": -0.0035,
+      "z_sim": 1.538,
+      "p_sim": 0.072
+    },
+    {
+      "variable": "poverty_rate",
+      "weights": "queen",
+      "I": 0.2703,
+      "EI": -0.0035,
+      "z_sim": 8.094,
+      "p_sim": 0.001
+    },
+    {
+      "variable": "poverty_rate",
+      "weights": "knn5",
+      "I": 0.2564,
+      "EI": -0.0035,
+      "z_sim": 7.815,
+      "p_sim": 0.001
+    },
+    {
+      "variable": "poverty_rate",
+      "weights": "dist3mi",
+      "I": 0.1027,
+      "EI": -0.0035,
+      "z_sim": 6.237,
+      "p_sim": 0.001
+    },
+    {
+      "variable": "eviction_filing_rate_eb",
+      "weights": "queen",
+      "I": null,
+      "EI": -0.0035,
+      "z_sim": null,
+      "p_sim": 0.001
+    },
+    {
+      "variable": "eviction_filing_rate_eb",
+      "weights": "knn5",
+      "I": null,
+      "EI": -0.0035,
+      "z_sim": null,
+      "p_sim": 0.001
+    },
+    {
+      "variable": "eviction_filing_rate_eb",
+      "weights": "dist3mi",
+      "I": null,
+      "EI": -0.0035,
+      "z_sim": null,
+      "p_sim": 0.001
+    }
+  ],
+  "robustness": [
+    {
+      "variable": "access_score",
+      "I_mean": 0.9045,
+      "I_std": 0.0616,
+      "p_max": 0.001,
+      "robust": false
+    },
+    {
+      "variable": "eviction_filing_rate_eb",
+      "I_mean": null,
+      "I_std": null,
+      "p_max": 0.001,
+      "robust": false
+    },
+    {
+      "variable": "mismatch_index",
+      "I_mean": 0.6946,
+      "I_std": 0.0674,
+      "p_max": 0.001,
+      "robust": false
+    },
+    {
+      "variable": "need_score",
+      "I_mean": 0.257,
+      "I_std": 0.1065,
+      "p_max": 0.001,
+      "robust": false
+    },
+    {
+      "variable": "poverty_rate",
+      "I_mean": 0.2098,
+      "I_std": 0.093,
+      "p_max": 0.001,
+      "robust": false
+    },
+    {
+      "variable": "rent_burden_rate",
+      "I_mean": 0.0394,
+      "I_std": 0.0299,
+      "p_max": 0.278,
+      "robust": false
+    }
+  ],
+  "validation_gate": {
+    "bivariate_I": 0.274,
+    "p_sim": 0.001,
+    "interpretation": "I=+0.274, p=0.001 \u2014 services concentrate where need is high. Mismatch narrative will underperform; consider shortage / disparity angle.",
+    "verdict": "mismatch-story-weak"
+  },
+  "lisa_counts": {
+    "mismatch_index": {
+      "ns": 148,
+      "HH": 70,
+      "LL": 66,
+      "HL": 2
+    },
+    "need_score": {
+      "ns": 236,
+      "LL": 24,
+      "HH": 16,
+      "HL": 7,
+      "LH": 3
+    }
+  }
+}
