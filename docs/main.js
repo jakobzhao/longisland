@@ -397,7 +397,7 @@ function renderCorrelation() {
   note.textContent = correlationNote(factor, r);
   svg.innerHTML = `
     <title id="corr-title">Access index compared with ${escape(label)}</title>
-    <desc id="corr-desc">Scatter plot of ${rows.length} Long Island census tracts. Y axis is access index from zero to one hundred. X axis is ${escape(label)}.</desc>
+    <desc id="corr-desc">Scatter plot of ${rows.length} longisland census tracts. Y axis is access index from zero to one hundred. X axis is ${escape(label)}.</desc>
     <line class="corr-grid" x1="${m.left}" x2="${w - m.right}" y1="${sy(50)}" y2="${sy(50)}"></line>
     <line class="corr-axis" x1="${m.left}" x2="${m.left}" y1="${m.top}" y2="${h - m.bottom}"></line>
     <line class="corr-axis" x1="${m.left}" x2="${w - m.right}" y1="${h - m.bottom}" y2="${h - m.bottom}"></line>

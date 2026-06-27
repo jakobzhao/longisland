@@ -1,6 +1,6 @@
 # longisland Social Responsibility & Resource Access
 
-Static spatial-analysis app for evaluating whether basic-needs and homelessness-related resources across suburban Long Island are visible, reachable, and aligned with high-need communities.
+Static spatial-analysis app for evaluating whether basic-needs and homelessness-related resources across suburban longisland are visible, reachable, and aligned with high-need communities.
 
 The study area is Nassau County and Suffolk County. Kings and Queens are excluded because they are part of New York City's distinct shelter, transit, density, and governance system.
 
@@ -16,7 +16,7 @@ The analysis therefore separates three questions:
 
 ## Current Data
 
-- Tracts: 665 Long Island census tracts from TIGER/Line 2022, excluding water-only tracts
+- Tracts: 665 longisland census tracts from TIGER/Line 2022, excluding water-only tracts
 - ACS: 2022 5-year tract indicators
 - Resources: 184 Nassau + Suffolk resource points
 - Access-score resources: 161 food, shelter/intake, and outreach points
@@ -32,14 +32,14 @@ Need is a tract-level composite of:
 - renter share,
 - eviction filing rate placeholder.
 
-Eviction data is currently a stub because tract-level Long Island eviction data has not yet been added. The code skips the constant eviction placeholder in spatial diagnostics.
+Eviction data is currently a stub because tract-level longisland eviction data has not yet been added. The code skips the constant eviction placeholder in spatial diagnostics.
 
 Access is calculated with Enhanced Two-Step Floating Catchment Area (E2SFCA), using renter households as the demand base and a 15-minute catchment. The pipeline produces separate outputs for:
 
 - 15-minute drive access,
 - 15-minute walk access.
 
-The raw `access_score` is retained for diagnostics and mismatch calculations. The map displays `access_index`, a 0-100 Long Island percentile rank of raw access, so readers can compare relative accessibility without interpreting tiny E2SFCA supply-demand ratios.
+The raw `access_score` is retained for diagnostics and mismatch calculations. The map displays `access_index`, a 0-100 longisland percentile rank of raw access, so readers can compare relative accessibility without interpreting tiny E2SFCA supply-demand ratios.
 
 Spatial diagnostics include:
 
@@ -51,11 +51,11 @@ Spatial diagnostics include:
 
 ## Latest Findings
 
-For the Long Island-wide run:
+For the longisland-wide run:
 
 - Drive: bivariate Moran's I between need and access is `+0.097`, `p = 0.001`. Resources weakly but significantly follow need, so the project should lead with local mismatch rather than a blanket claim that resources ignore high-need areas.
 - Walk: bivariate Moran's I is `-0.025`, `p = 0.141`. There is no clear spatial relationship, supporting the argument that car dependence changes the meaning of access.
-- Homeless-student data shows substantial suburban need beyond New York City. The 3-year average Long Island total is about 7,657 K-12 students identified as homeless, with high concentrations in Hempstead, William Floyd, Brentwood, Longwood, Riverhead, Central Islip, Amityville, Sachem, Copiague, Farmingdale, Wyandanch, and other districts.
+- Homeless-student data shows substantial suburban need beyond New York City. The 3-year average longisland total is about 7,657 K-12 students identified as homeless, with high concentrations in Hempstead, William Floyd, Brentwood, Longwood, Riverhead, Central Islip, Amityville, Sachem, Copiague, Farmingdale, Wyandanch, and other districts.
 
 ## Repository Structure
 
