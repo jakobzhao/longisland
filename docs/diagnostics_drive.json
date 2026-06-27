@@ -7,211 +7,181 @@
     {
       "variable": "need_score",
       "weights": "queen",
-      "I": 0.3175,
-      "EI": -0.0035,
-      "z_sim": 9.326,
+      "I": 0.2276,
+      "EI": -0.0015,
+      "z_sim": 10.052,
       "p_sim": 0.001
     },
     {
       "variable": "need_score",
       "weights": "knn5",
-      "I": 0.3195,
-      "EI": -0.0035,
-      "z_sim": 9.289,
+      "I": 0.2306,
+      "EI": -0.0015,
+      "z_sim": 10.013,
       "p_sim": 0.001
     },
     {
       "variable": "need_score",
       "weights": "dist3mi",
-      "I": 0.134,
-      "EI": -0.0035,
-      "z_sim": 7.296,
+      "I": 0.1333,
+      "EI": -0.0015,
+      "z_sim": 8.209,
       "p_sim": 0.001
     },
     {
       "variable": "access_score",
       "weights": "queen",
-      "I": 0.9356,
-      "EI": -0.0035,
-      "z_sim": 25.935,
+      "I": 0.8577,
+      "EI": -0.0015,
+      "z_sim": 37.789,
       "p_sim": 0.001
     },
     {
       "variable": "access_score",
       "weights": "knn5",
-      "I": 0.9444,
-      "EI": -0.0035,
-      "z_sim": 26.389,
+      "I": 0.8534,
+      "EI": -0.0015,
+      "z_sim": 36.514,
       "p_sim": 0.001
     },
     {
       "variable": "access_score",
       "weights": "dist3mi",
-      "I": 0.8335,
-      "EI": -0.0035,
-      "z_sim": 42.935,
+      "I": 0.8275,
+      "EI": -0.0015,
+      "z_sim": 50.508,
       "p_sim": 0.001
     },
     {
       "variable": "mismatch_index",
       "weights": "queen",
-      "I": 0.7308,
-      "EI": -0.0035,
-      "z_sim": 21.911,
+      "I": 0.714,
+      "EI": -0.0015,
+      "z_sim": 30.641,
       "p_sim": 0.001
     },
     {
       "variable": "mismatch_index",
       "weights": "knn5",
-      "I": 0.7361,
-      "EI": -0.0035,
-      "z_sim": 21.382,
+      "I": 0.6922,
+      "EI": -0.0015,
+      "z_sim": 29.494,
       "p_sim": 0.001
     },
     {
       "variable": "mismatch_index",
       "weights": "dist3mi",
-      "I": 0.6168,
-      "EI": -0.0035,
-      "z_sim": 32.102,
+      "I": 0.6675,
+      "EI": -0.0015,
+      "z_sim": 43.787,
       "p_sim": 0.001
     },
     {
       "variable": "rent_burden_rate",
       "weights": "queen",
-      "I": 0.0737,
-      "EI": -0.0035,
-      "z_sim": 2.168,
-      "p_sim": 0.014
+      "I": 0.0487,
+      "EI": -0.0015,
+      "z_sim": 2.151,
+      "p_sim": 0.013
     },
     {
       "variable": "rent_burden_rate",
       "weights": "knn5",
-      "I": 0.0185,
-      "EI": -0.0035,
-      "z_sim": 0.602,
-      "p_sim": 0.278
+      "I": 0.0354,
+      "EI": -0.0015,
+      "z_sim": 1.544,
+      "p_sim": 0.067
     },
     {
       "variable": "rent_burden_rate",
       "weights": "dist3mi",
-      "I": 0.0261,
-      "EI": -0.0035,
-      "z_sim": 1.538,
-      "p_sim": 0.072
+      "I": 0.0423,
+      "EI": -0.0015,
+      "z_sim": 2.737,
+      "p_sim": 0.005
     },
     {
       "variable": "poverty_rate",
       "weights": "queen",
-      "I": 0.2703,
-      "EI": -0.0035,
-      "z_sim": 8.094,
+      "I": 0.1909,
+      "EI": -0.0015,
+      "z_sim": 8.613,
       "p_sim": 0.001
     },
     {
       "variable": "poverty_rate",
       "weights": "knn5",
-      "I": 0.2564,
-      "EI": -0.0035,
-      "z_sim": 7.815,
+      "I": 0.1836,
+      "EI": -0.0015,
+      "z_sim": 7.782,
       "p_sim": 0.001
     },
     {
       "variable": "poverty_rate",
       "weights": "dist3mi",
-      "I": 0.1027,
-      "EI": -0.0035,
-      "z_sim": 6.237,
-      "p_sim": 0.001
-    },
-    {
-      "variable": "eviction_filing_rate_eb",
-      "weights": "queen",
-      "I": null,
-      "EI": -0.0035,
-      "z_sim": null,
-      "p_sim": 0.001
-    },
-    {
-      "variable": "eviction_filing_rate_eb",
-      "weights": "knn5",
-      "I": null,
-      "EI": -0.0035,
-      "z_sim": null,
-      "p_sim": 0.001
-    },
-    {
-      "variable": "eviction_filing_rate_eb",
-      "weights": "dist3mi",
-      "I": null,
-      "EI": -0.0035,
-      "z_sim": null,
-      "p_sim": 0.001
+      "I": 0.1324,
+      "EI": -0.0015,
+      "z_sim": 8.19,
+      "p_sim": 0.002
     }
   ],
   "robustness": [
     {
       "variable": "access_score",
-      "I_mean": 0.9045,
-      "I_std": 0.0616,
+      "I_mean": 0.8462,
+      "I_std": 0.0163,
       "p_max": 0.001,
-      "robust": false
-    },
-    {
-      "variable": "eviction_filing_rate_eb",
-      "I_mean": null,
-      "I_std": null,
-      "p_max": 0.001,
-      "robust": false
+      "robust": true
     },
     {
       "variable": "mismatch_index",
-      "I_mean": 0.6946,
-      "I_std": 0.0674,
+      "I_mean": 0.6912,
+      "I_std": 0.0233,
       "p_max": 0.001,
-      "robust": false
+      "robust": true
     },
     {
       "variable": "need_score",
-      "I_mean": 0.257,
-      "I_std": 0.1065,
+      "I_mean": 0.1972,
+      "I_std": 0.0553,
       "p_max": 0.001,
       "robust": false
     },
     {
       "variable": "poverty_rate",
-      "I_mean": 0.2098,
-      "I_std": 0.093,
-      "p_max": 0.001,
-      "robust": false
+      "I_mean": 0.169,
+      "I_std": 0.0319,
+      "p_max": 0.002,
+      "robust": true
     },
     {
       "variable": "rent_burden_rate",
-      "I_mean": 0.0394,
-      "I_std": 0.0299,
-      "p_max": 0.278,
+      "I_mean": 0.0421,
+      "I_std": 0.0067,
+      "p_max": 0.067,
       "robust": false
     }
   ],
   "validation_gate": {
-    "bivariate_I": 0.274,
+    "bivariate_I": 0.0968,
     "p_sim": 0.001,
-    "interpretation": "I=+0.274, p=0.001 \u2014 services concentrate where need is high. Mismatch narrative will underperform; consider shortage / disparity angle.",
-    "verdict": "mismatch-story-weak"
+    "interpretation": "I=+0.097, p=0.001 \u2014 weak relationship. Mismatch index can still surface local pockets; proceed but lead with LISA rather than the global claim.",
+    "verdict": "mismatch-story-strong"
   },
   "lisa_counts": {
     "mismatch_index": {
-      "ns": 148,
-      "HH": 70,
-      "LL": 66,
-      "HL": 2
+      "ns": 357,
+      "HH": 172,
+      "LL": 128,
+      "LH": 4,
+      "HL": 4
     },
     "need_score": {
-      "ns": 236,
-      "LL": 24,
-      "HH": 16,
-      "HL": 7,
-      "LH": 3
+      "ns": 545,
+      "LL": 55,
+      "HH": 33,
+      "HL": 17,
+      "LH": 15
     }
   }
 }

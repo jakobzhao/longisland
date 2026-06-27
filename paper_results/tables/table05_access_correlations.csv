@@ -1,0 +1,11 @@
+mode,factor,pearson_r_with_access_index,n_tracts
+drive,need_score,0.103,665
+drive,poverty_rate,0.13,665
+drive,rent_burden_rate,-0.027,665
+drive,renter_share,0.118,665
+drive,mismatch_index,-0.84,665
+walk,need_score,0.205,665
+walk,poverty_rate,0.139,665
+walk,rent_burden_rate,0.034,665
+walk,renter_share,0.265,665
+walk,mismatch_index,-0.218,665

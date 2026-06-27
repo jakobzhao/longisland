@@ -1,0 +1,3 @@
+mode,bivariate_I_need_access,p_sim,verdict,interpretation
+drive,0.0968,0.001,mismatch-story-strong,"I=+0.097, p=0.001 — weak relationship. Mismatch index can still surface local pockets; proceed but lead with LISA rather than the global claim."
+walk,-0.0245,0.121,inconclusive,"I=-0.025, p=0.121 — not significant; no clear spatial relation."

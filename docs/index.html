@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Nassau — Access &amp; Need Mismatch</title>
+  <title>Long Island — Access &amp; Need Mismatch</title>
   <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" />
   <link rel="stylesheet" href="./style.css" />
   <script type="importmap">
@@ -20,7 +20,7 @@
 
     <aside id="panel">
       <header>
-        <h1>Nassau County<br><span>Access &amp; Need Mismatch</span></h1>
+        <h1>Long Island<br><span>Social Responsibility &amp; Resource Access</span></h1>
         <div class="mode-switch">
           <button data-mode="drive" class="active">15 min drive</button>
           <button data-mode="walk">15 min walk</button>
@@ -38,15 +38,33 @@
         <label><input type="radio" name="layer" value="lisa" checked> LISA clusters (mismatch)</label>
         <label><input type="radio" name="layer" value="mismatch_index"> Mismatch index</label>
         <label><input type="radio" name="layer" value="need_score"> Need score</label>
-        <label><input type="radio" name="layer" value="access_score"> Access score</label>
+        <label><input type="radio" name="layer" value="access_index"> Access index</label>
         <label><input type="radio" name="layer" value="poverty_rate"> Poverty rate</label>
-        <label><input type="checkbox" id="facilities-toggle" checked> Show facilities</label>
+        <label><input type="checkbox" id="facilities-toggle" checked> Show resources</label>
         <label><input type="checkbox" id="districts-toggle"> Show K-12 homeless students (by district)</label>
       </section>
 
       <section id="legend">
         <div class="section-label">Legend</div>
         <div id="legend-body"></div>
+      </section>
+
+      <section id="correlation-panel">
+        <div class="section-label">Resource alignment</div>
+        <label class="select-label" for="factor-select">Compare access with</label>
+        <select id="factor-select">
+          <option value="need_score">Need score</option>
+          <option value="poverty_rate">Poverty rate</option>
+          <option value="rent_burden_rate">Rent burden</option>
+          <option value="renter_share">Renter share</option>
+          <option value="mismatch_index">Mismatch index</option>
+        </select>
+        <div id="corr-stat" class="corr-stat">—</div>
+        <svg id="corr-chart" viewBox="0 0 304 190" role="img" aria-labelledby="corr-title corr-desc">
+          <title id="corr-title">Access correlation scatter plot</title>
+          <desc id="corr-desc">Scatter plot comparing tract access index with the selected factor.</desc>
+        </svg>
+        <div id="corr-note" class="muted small">—</div>
       </section>
 
       <section id="tract-detail" class="empty">
@@ -56,8 +74,8 @@
 
       <footer>
         <div class="muted small">
-          ACS 2022 5-year · HUD HIC 2024 · Island Harvest + LI Cares + OSM
-          <br>Methods &amp; caveats: see <a href="https://github.com/" target="_blank">README</a>
+          ACS 2022 5-year · Nassau + Suffolk resources · NYSED McKinney-Vento
+          <br>Methods &amp; caveats: see <a href="https://github.com/jakobzhao/longisland#readme" target="_blank">README</a>
         </div>
       </footer>
     </aside>

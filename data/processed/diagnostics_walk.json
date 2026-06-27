@@ -7,212 +7,181 @@
     {
       "variable": "need_score",
       "weights": "queen",
-      "I": 0.3175,
-      "EI": -0.0035,
-      "z_sim": 9.389,
+      "I": 0.2276,
+      "EI": -0.0015,
+      "z_sim": 10.066,
       "p_sim": 0.001
     },
     {
       "variable": "need_score",
       "weights": "knn5",
-      "I": 0.3195,
-      "EI": -0.0035,
-      "z_sim": 8.803,
+      "I": 0.2306,
+      "EI": -0.0015,
+      "z_sim": 9.778,
       "p_sim": 0.001
     },
     {
       "variable": "need_score",
       "weights": "dist3mi",
-      "I": 0.134,
-      "EI": -0.0035,
-      "z_sim": 6.914,
-      "p_sim": 0.002
+      "I": 0.1333,
+      "EI": -0.0015,
+      "z_sim": 8.35,
+      "p_sim": 0.001
     },
     {
       "variable": "access_score",
       "weights": "queen",
-      "I": 0.0449,
-      "EI": -0.0035,
-      "z_sim": 2.482,
-      "p_sim": 0.027
+      "I": 0.0213,
+      "EI": -0.0015,
+      "z_sim": 1.202,
+      "p_sim": 0.054
     },
     {
       "variable": "access_score",
       "weights": "knn5",
-      "I": 0.0615,
-      "EI": -0.0035,
-      "z_sim": 2.965,
-      "p_sim": 0.017
+      "I": 0.0284,
+      "EI": -0.0015,
+      "z_sim": 1.555,
+      "p_sim": 0.038
     },
     {
       "variable": "access_score",
       "weights": "dist3mi",
-      "I": 0.0324,
-      "EI": -0.0035,
-      "z_sim": 2.954,
-      "p_sim": 0.014
+      "I": 0.0169,
+      "EI": -0.0015,
+      "z_sim": 1.055,
+      "p_sim": 0.053
     },
     {
       "variable": "mismatch_index",
       "weights": "queen",
       "I": 0.0858,
-      "EI": -0.0035,
-      "z_sim": 3.229,
-      "p_sim": 0.008
+      "EI": -0.0015,
+      "z_sim": 3.949,
+      "p_sim": 0.012
     },
     {
       "variable": "mismatch_index",
       "weights": "knn5",
-      "I": 0.1037,
-      "EI": -0.0035,
-      "z_sim": 3.66,
+      "I": 0.0953,
+      "EI": -0.0015,
+      "z_sim": 4.709,
       "p_sim": 0.007
     },
     {
       "variable": "mismatch_index",
       "weights": "dist3mi",
-      "I": 0.0501,
-      "EI": -0.0035,
-      "z_sim": 3.464,
-      "p_sim": 0.009
+      "I": 0.0498,
+      "EI": -0.0015,
+      "z_sim": 3.378,
+      "p_sim": 0.007
     },
     {
       "variable": "rent_burden_rate",
       "weights": "queen",
-      "I": 0.0737,
-      "EI": -0.0035,
-      "z_sim": 2.236,
+      "I": 0.0487,
+      "EI": -0.0015,
+      "z_sim": 2.155,
       "p_sim": 0.014
     },
     {
       "variable": "rent_burden_rate",
       "weights": "knn5",
-      "I": 0.0185,
-      "EI": -0.0035,
-      "z_sim": 0.697,
-      "p_sim": 0.246
+      "I": 0.0354,
+      "EI": -0.0015,
+      "z_sim": 1.543,
+      "p_sim": 0.069
     },
     {
       "variable": "rent_burden_rate",
       "weights": "dist3mi",
-      "I": 0.0261,
-      "EI": -0.0035,
-      "z_sim": 1.571,
-      "p_sim": 0.07
+      "I": 0.0423,
+      "EI": -0.0015,
+      "z_sim": 2.633,
+      "p_sim": 0.009
     },
     {
       "variable": "poverty_rate",
       "weights": "queen",
-      "I": 0.2703,
-      "EI": -0.0035,
-      "z_sim": 7.997,
+      "I": 0.1909,
+      "EI": -0.0015,
+      "z_sim": 8.892,
       "p_sim": 0.001
     },
     {
       "variable": "poverty_rate",
       "weights": "knn5",
-      "I": 0.2564,
-      "EI": -0.0035,
-      "z_sim": 7.778,
+      "I": 0.1836,
+      "EI": -0.0015,
+      "z_sim": 8.162,
       "p_sim": 0.001
     },
     {
       "variable": "poverty_rate",
       "weights": "dist3mi",
-      "I": 0.1027,
-      "EI": -0.0035,
-      "z_sim": 5.261,
-      "p_sim": 0.003
-    },
-    {
-      "variable": "eviction_filing_rate_eb",
-      "weights": "queen",
-      "I": null,
-      "EI": -0.0035,
-      "z_sim": null,
-      "p_sim": 0.001
-    },
-    {
-      "variable": "eviction_filing_rate_eb",
-      "weights": "knn5",
-      "I": null,
-      "EI": -0.0035,
-      "z_sim": null,
-      "p_sim": 0.001
-    },
-    {
-      "variable": "eviction_filing_rate_eb",
-      "weights": "dist3mi",
-      "I": null,
-      "EI": -0.0035,
-      "z_sim": null,
+      "I": 0.1324,
+      "EI": -0.0015,
+      "z_sim": 8.683,
       "p_sim": 0.001
     }
   ],
   "robustness": [
     {
       "variable": "access_score",
-      "I_mean": 0.0463,
-      "I_std": 0.0146,
-      "p_max": 0.027,
-      "robust": true
-    },
-    {
-      "variable": "eviction_filing_rate_eb",
-      "I_mean": null,
-      "I_std": null,
-      "p_max": 0.001,
+      "I_mean": 0.0222,
+      "I_std": 0.0058,
+      "p_max": 0.054,
       "robust": false
     },
     {
       "variable": "mismatch_index",
-      "I_mean": 0.0799,
-      "I_std": 0.0273,
-      "p_max": 0.009,
+      "I_mean": 0.077,
+      "I_std": 0.024,
+      "p_max": 0.012,
       "robust": true
     },
     {
       "variable": "need_score",
-      "I_mean": 0.257,
-      "I_std": 0.1065,
-      "p_max": 0.002,
+      "I_mean": 0.1972,
+      "I_std": 0.0553,
+      "p_max": 0.001,
       "robust": false
     },
     {
       "variable": "poverty_rate",
-      "I_mean": 0.2098,
-      "I_std": 0.093,
-      "p_max": 0.003,
-      "robust": false
+      "I_mean": 0.169,
+      "I_std": 0.0319,
+      "p_max": 0.001,
+      "robust": true
     },
     {
       "variable": "rent_burden_rate",
-      "I_mean": 0.0394,
-      "I_std": 0.0299,
-      "p_max": 0.246,
+      "I_mean": 0.0421,
+      "I_std": 0.0067,
+      "p_max": 0.069,
       "robust": false
     }
   ],
   "validation_gate": {
-    "bivariate_I": 0.0326,
-    "p_sim": 0.163,
-    "interpretation": "I=+0.033, p=0.163 \u2014 not significant; no clear spatial relation.",
+    "bivariate_I": -0.0245,
+    "p_sim": 0.121,
+    "interpretation": "I=-0.025, p=0.121 \u2014 not significant; no clear spatial relation.",
     "verdict": "inconclusive"
   },
   "lisa_counts": {
     "mismatch_index": {
-      "ns": 254,
-      "HH": 18,
-      "LL": 7,
-      "HL": 5,
-      "LH": 2
+      "ns": 568,
+      "HH": 49,
+      "LL": 24,
+      "HL": 12,
+      "LH": 12
     },
     "need_score": {
-      "ns": 236,
-      "LL": 22,
-      "HH": 18,
-      "HL": 7,
-      "LH": 3
+      "ns": 552,
+      "LL": 49,
+      "HH": 33,
+      "HL": 17,
+      "LH": 14
     }
   }
 }

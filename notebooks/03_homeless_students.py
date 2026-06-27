@@ -1,14 +1,13 @@
 # %% [markdown]
-# # 03 — NYSED McKinney-Vento homeless students (Nassau school districts)
+# # 03 — NYSED McKinney-Vento homeless students (Long Island school districts)
 #
 # Joins NYSED 3-year SIRS data on student homelessness (2018-19 → 2020-21)
 # to TIGER 2023 school district boundaries (UNSD + ELSD + SCSD) clipped to
-# Nassau, producing `docs/homeless_students_districts.geojson`.
+# Nassau and Suffolk, producing `docs/homeless_students_districts.geojson`.
 #
-# Output polygons are non-overlapping and tile the county: 43 unified (K-12)
-# districts keep their own counts, and the 11 elementary / 3 secondary
-# districts are dissolved into 3 merged SCSD geometries with summed K-12
-# totals.
+# Output polygons are non-overlapping as much as possible: unified (K-12)
+# districts keep their own counts, and elementary districts are dissolved into
+# containing secondary districts with summed K-12 totals.
 #
 # Caveats reported in UI:
 # - Total includes unaccompanied youth (no public district-level split;
@@ -19,9 +18,8 @@
 
 # %%
 import re
-import io
-import zipfile
 from pathlib import Path
+from time import sleep
 
 import openpyxl
 import pandas as pd
@@ -40,6 +38,8 @@ NYSED_XLSX_URL = (
 )
 TIGER_YEAR = 2023
 TIGER_STATE = "36"  # NY
+LONG_ISLAND_COUNTIES = {"NASSAU", "SUFFOLK"}
+LONG_ISLAND_COUNTYFPS = {"059", "103"}
 
 # %% [markdown]
 # ## 1. Download NYSED 3-year SIRS homelessness summary
@@ -61,7 +61,7 @@ def parse_nysed(path):
     headers = rows[hdr_idx]
     recs = [dict(zip(headers, r)) for r in rows[hdr_idx + 1:] if r[0]]
     df = pd.DataFrame(recs)
-    df = df[df["COUNTY NAME"].str.upper().str.strip() == "NASSAU"].copy()
+    df = df[df["COUNTY NAME"].str.upper().str.strip().isin(LONG_ISLAND_COUNTIES)].copy()
     # coerce 's' (suppressed 1–4) to NaN, else numeric
     for c in ["2018-19 Dup Total", "2019-20 Dup Total",
               "2020-21 Dup Total", "3-Year Average"]:
@@ -84,11 +84,82 @@ def download_tiger(kind):
         out_zip.write_bytes(r.content)
     return gpd.read_file(f"zip://{out_zip}")
 
-def clip_to_nassau(gdf, nassau_geom_2263):
+
+def download_binary(url, out_path, timeout=180, attempts=3):
+    tmp_path = out_path.with_suffix(out_path.suffix + ".part")
+    for attempt in range(1, attempts + 1):
+        try:
+            with requests.get(url, timeout=timeout, stream=True) as r:
+                r.raise_for_status()
+                with tmp_path.open("wb") as f:
+                    for chunk in r.iter_content(chunk_size=1024 * 1024):
+                        if chunk:
+                            f.write(chunk)
+            tmp_path.replace(out_path)
+            return out_path
+        except requests.RequestException:
+            tmp_path.unlink(missing_ok=True)
+            if attempt == attempts:
+                raise
+            sleep(2 * attempt)
+    return out_path
+
+
+def long_island_county_geom_2263():
+    """Use full county tract coverage to identify Nassau + Suffolk."""
+    tract_zip = DATA_RAW / "tl_2022_36_tract.zip"
+    if not tract_zip.exists():
+        url = "https://www2.census.gov/geo/tiger/TIGER2022/TRACT/tl_2022_36_tract.zip"
+        r = requests.get(url, timeout=120)
+        r.raise_for_status()
+        tract_zip.write_bytes(r.content)
+    tracts = gpd.read_file(f"zip://{tract_zip}")
+    tracts = tracts[tracts["COUNTYFP"].isin(LONG_ISLAND_COUNTYFPS)].copy()
+    return tracts.to_crs(2263).union_all()
+
+
+def long_island_land_geom_2263():
+    """Land-only clipping mask for K-12 districts.
+
+    TIGER school-district polygons often extend into bays, the Sound, and the
+    Atlantic. Subtracting TIGER AREAWATER keeps the school layer readable while
+    preserving coastal districts on land.
+    """
+    county_geom = long_island_county_geom_2263()
+    water_parts = []
+    for county_fp in sorted(LONG_ISLAND_COUNTYFPS):
+        county_geoid = f"{TIGER_STATE}{county_fp}"
+        water_zip = DATA_RAW / f"tl_{TIGER_YEAR}_{county_geoid}_areawater.zip"
+        url = (
+            f"https://www2.census.gov/geo/tiger/TIGER{TIGER_YEAR}/"
+            f"AREAWATER/tl_{TIGER_YEAR}_{county_geoid}_areawater.zip"
+        )
+        if not water_zip.exists():
+            download_binary(url, water_zip)
+        water_parts.append(gpd.read_file(f"zip://{water_zip}"))
+
+    water = pd.concat(water_parts, ignore_index=True)
+    water = gpd.GeoDataFrame(water, geometry="geometry", crs=water_parts[0].crs)
+    water = water.to_crs(2263)
+    water = water[water.intersects(county_geom)].copy()
+    water_geom = water.union_all()
+    return county_geom.difference(water_geom).buffer(0)
+
+
+def long_island_county_lookup_2263():
+    tract_zip = DATA_RAW / "tl_2022_36_tract.zip"
+    if not tract_zip.exists():
+        long_island_county_geom_2263()
+    tracts = gpd.read_file(f"zip://{tract_zip}")
+    tracts = tracts[tracts["COUNTYFP"].isin(LONG_ISLAND_COUNTYFPS)].copy()
+    tracts["county_name"] = tracts["COUNTYFP"].map({"059": "NASSAU", "103": "SUFFOLK"})
+    return tracts.to_crs(2263).dissolve(by="county_name").reset_index()[["county_name", "geometry"]]
+
+
+def select_long_island(gdf, selection_geom_2263):
     g = gdf.to_crs(2263)
-    mask = g.geometry.centroid.within(nassau_geom_2263.buffer(100))
-    out = gdf.loc[mask].copy()
-    return out
+    mask = g.geometry.centroid.within(selection_geom_2263.buffer(100))
+    return gdf.loc[mask].copy()
 
 # %% [markdown]
 # ## 3. Name normalisation and join
@@ -109,12 +180,12 @@ def norm_name(s):
 
 # %%
 def build():
-    tracts = gpd.read_file(DATA_PROCESSED / "tracts_drive.geojson")
-    nassau_geom = tracts.to_crs(2263).union_all()
+    long_island_geom = long_island_county_geom_2263()
+    long_island_land_geom = long_island_land_geom_2263()
 
-    unsd = clip_to_nassau(download_tiger("unsd"), nassau_geom)
-    elsd = clip_to_nassau(download_tiger("elsd"), nassau_geom)
-    scsd = clip_to_nassau(download_tiger("scsd"), nassau_geom)
+    unsd = select_long_island(download_tiger("unsd"), long_island_geom)
+    elsd = select_long_island(download_tiger("elsd"), long_island_geom)
+    scsd = select_long_island(download_tiger("scsd"), long_island_geom)
     unsd["LEVEL"] = "UNSD"
     elsd["LEVEL"] = "ELSD"
     scsd["LEVEL"] = "SCSD"
@@ -138,10 +209,15 @@ def build():
         nysed[nysed["ORG TYPE"] == "SCHOOL DISTRICT"]
         .set_index("key")["Bedscode"].to_dict()
     )
+    county_by_key = (
+        nysed[nysed["ORG TYPE"] == "SCHOOL DISTRICT"]
+        .set_index("key")["COUNTY NAME"].to_dict()
+    )
 
     districts["homeless_avg_3yr"] = districts["key"].map(count_by_key)
     districts["homeless_2020_21"] = districts["key"].map(count_2020_by_key)
     districts["bedscode"] = districts["key"].map(beds_by_key)
+    districts["county_name"] = districts["key"].map(county_by_key)
 
     # Dissolve ELSD into containing SCSD so we have one K-12 count per
     # non-unified region.
@@ -197,15 +273,35 @@ def build():
     )
     final = gpd.GeoDataFrame(final, geometry="geometry", crs=unsd_only.crs)
 
+    county_lookup = long_island_county_lookup_2263()
+    final_2263 = final.to_crs(2263).copy()
+    final_2263["district_pt"] = final_2263.geometry.representative_point()
+    county_join = gpd.sjoin(
+        final_2263.set_geometry("district_pt"),
+        county_lookup,
+        how="left",
+        predicate="within",
+    )[["GEOID", "county_name_right"]]
+    final = final.merge(county_join, on="GEOID", how="left")
+    final["county_name"] = final["county_name"].fillna(final["county_name_right"])
+    final = final.drop(columns=["county_name_right"], errors="ignore")
+
+    final_crs = final.crs
+    final_2263 = final.to_crs(2263).copy()
+    final_2263["geometry"] = final_2263.geometry.intersection(long_island_land_geom)
+    final_2263 = final_2263[~final_2263.geometry.is_empty].copy()
+    final = final_2263.to_crs(final_crs)
+
     # Enrollment-based rate would be better, but NYSED 3-year file doesn't
     # include enrollment. Leave count-only and let the UI decide styling.
     out_cols = [
         "GEOID", "display_name", "LEVEL",
         "homeless_k12_avg", "homeless_k12_2020",
-        "bedscode", "composition", "geometry",
+        "bedscode", "county_name", "composition", "geometry",
     ]
     final = final[out_cols]
     final.to_file(DOCS / "homeless_students_districts.geojson", driver="GeoJSON")
+    final.to_file(DATA_PROCESSED / "homeless_students_districts.geojson", driver="GeoJSON")
     final.drop(columns="geometry").to_csv(
         DATA_PROCESSED / "homeless_students_districts.csv", index=False
     )

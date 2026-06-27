@@ -125,6 +125,9 @@ section:first-of-type { border-top: 0; padding-top: 4px; }
   border: 1px solid rgba(0,0,0,0.1);
   flex-shrink: 0;
 }
+#legend-body .swatch.circle {
+  border-radius: 50%;
+}
 #legend-body .gradient {
   height: 10px;
   width: 100%;
@@ -138,6 +141,43 @@ section:first-of-type { border-top: 0; padding-top: 4px; }
   justify-content: space-between;
   font-size: 11px;
   color: var(--fg-muted);
+}
+
+#correlation-panel .select-label {
+  display: block;
+  font-size: 11px;
+  color: var(--fg-muted);
+  margin-bottom: 4px;
+}
+#factor-select {
+  width: 100%;
+  height: 30px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: var(--bg);
+  color: var(--fg);
+  font-size: 12px;
+  padding: 0 8px;
+}
+.corr-stat {
+  margin: 8px 0 4px;
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+#corr-chart {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 2px 0 6px;
+}
+.corr-axis { stroke: #777; stroke-width: 1; }
+.corr-grid { stroke: #e5e7eb; stroke-width: 1; }
+.corr-point { fill: #0f62fe; fill-opacity: 0.34; }
+.corr-line { stroke: #111; stroke-width: 1.5; }
+.corr-label {
+  fill: var(--fg-muted);
+  font-size: 10px;
 }
 
 #tract-detail.empty #detail-body { font-size: 12px; }

@@ -29,3 +29,4 @@ jupyter>=1.0
 jupytext>=1.16
 papermill>=2.5      # for scheduled runs in CI
 python-dotenv>=1.0  # auto-loads .env for CENSUS_API_KEY etc.
+openpyxl>=3.1       # NYSED homeless-student XLSX reader

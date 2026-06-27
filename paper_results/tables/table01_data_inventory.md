@@ -1,0 +1,8 @@
+| dataset                         | n   | definition                                                                              |
+| ------------------------------- | --- | --------------------------------------------------------------------------------------- |
+| Census tracts                   | 665 | Nassau + Suffolk TIGER/ACS tracts, water-only tracts excluded                           |
+| ACS 2022 5-year indicators      | 665 | Poverty, rent burden, renter share, demographics, renter households                     |
+| Resource points                 | 184 | Nassau + Suffolk homelessness/basic-needs resources                                     |
+| Access-score resources          | 161 | Food, shelter/intake, and outreach resources included in E2SFCA                         |
+| Context-only resources          | 23  | Legal, health, housing-support, behavioral-health, public-benefits, and other resources |
+| K-12 homeless-student districts | 113 | NYSED McKinney-Vento district polygons, 2018-19 to 2020-21 average, clipped to land     |

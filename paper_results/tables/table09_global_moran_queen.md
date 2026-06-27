@@ -1,0 +1,12 @@
+| mode  | variable         | weights | I      | EI      | z_sim  | p_sim |
+| ----- | ---------------- | ------- | ------ | ------- | ------ | ----- |
+| drive | need_score       | queen   | 0.2276 | -0.0015 | 10.052 | 0.001 |
+| drive | access_score     | queen   | 0.8577 | -0.0015 | 37.789 | 0.001 |
+| drive | mismatch_index   | queen   | 0.714  | -0.0015 | 30.641 | 0.001 |
+| drive | rent_burden_rate | queen   | 0.0487 | -0.0015 | 2.151  | 0.013 |
+| drive | poverty_rate     | queen   | 0.1909 | -0.0015 | 8.613  | 0.001 |
+| walk  | need_score       | queen   | 0.2276 | -0.0015 | 10.066 | 0.001 |
+| walk  | access_score     | queen   | 0.0213 | -0.0015 | 1.202  | 0.054 |
+| walk  | mismatch_index   | queen   | 0.0858 | -0.0015 | 3.949  | 0.012 |
+| walk  | rent_burden_rate | queen   | 0.0487 | -0.0015 | 2.155  | 0.014 |
+| walk  | poverty_rate     | queen   | 0.1909 | -0.0015 | 8.892  | 0.001 |

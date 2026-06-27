@@ -1,0 +1,13 @@
+county,resource_group,count
+Nassau,food,93
+Nassau,outreach,3
+Nassau,shelter,2
+Suffolk,food,52
+Suffolk,shelter,10
+Suffolk,health,7
+Suffolk,legal,5
+Suffolk,behavioral_health,4
+Suffolk,housing_support,3
+Suffolk,public_benefits,3
+Suffolk,other,1
+Suffolk,outreach,1

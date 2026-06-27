@@ -1,0 +1,11 @@
+mode,lisa_label,count,share
+drive,HH,172,0.2586
+drive,LL,128,0.1925
+drive,HL,4,0.006
+drive,LH,4,0.006
+drive,ns,357,0.5368
+walk,HH,49,0.0737
+walk,LL,24,0.0361
+walk,HL,12,0.018
+walk,LH,12,0.018
+walk,ns,568,0.8541

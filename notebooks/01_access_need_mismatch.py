@@ -12,11 +12,11 @@
 # ---
 
 # %% [markdown]
-# # Nassau County — Access-Need Mismatch Index
+# # Long Island — Access-Need Mismatch Index
 #
 # Pipeline:
 # 1. Pull ACS 5-year tract data (rent burden, poverty, renter share, demographics) with margins of error
-# 2. Pull Nassau tract geometries (TIGER)
+# 2. Pull Nassau + Suffolk tract geometries (TIGER)
 # 3. Load eviction filings (external source — stub here)
 # 4. Load facility locations (shelters, food banks, pantries — stub here)
 # 5. Build **need** composite with MOE propagation
@@ -53,9 +53,12 @@ except ImportError:
 # ## 0. Config
 
 # %%
-NASSAU_STATE = "36"
-NASSAU_COUNTY = "059"
-NASSAU_FIPS = NASSAU_STATE + NASSAU_COUNTY
+NY_STATE = "36"
+COUNTIES = {
+    "059": "Nassau",
+    "103": "Suffolk",
+}
+LONG_ISLAND_FIPS = {NY_STATE + county for county in COUNTIES}
 
 ACS_YEAR = 2022                        # latest 5-year endpoint at time of writing
 ACS_DATASET = "acs5"
@@ -78,7 +81,7 @@ CENSUS_API_KEY = os.environ.get("CENSUS_API_KEY")  # get free key at api.census.
 # OSRM endpoint for travel-time matrix. Options:
 #   1. Self-host: docker run -t -i -p 5000:5000 osrm/osrm-backend osrm-routed /data/us-northeast.osrm
 #   2. Public demo: "https://router.project-osrm.org" (rate-limited; fine for Nassau scale)
-OSRM_DRIVE = os.environ.get("OSRM_DRIVE", "https://router.project-osrm.org")
+OSRM_DRIVE = os.environ.get("OSRM_DRIVE", "")
 OSRM_WALK = os.environ.get("OSRM_WALK", "")  # public demo only supports car; self-host for walking
 
 # %% [markdown]
@@ -134,13 +137,23 @@ def fetch_acs_tract(year: int, state: str, county: str, vars_map: dict) -> pd.Da
     df = pd.DataFrame(rows[1:], columns=rows[0])
     # GEOID for joins: 11-char string state(2)+county(3)+tract(6)
     df["GEOID"] = df["state"] + df["county"] + df["tract"]
+    df["county_name"] = df["county"].map(COUNTIES).fillna(df["county"])
     for code in var_codes:
         df[code] = pd.to_numeric(df[code], errors="coerce")
     return df
 
 
-def fetch_tract_geoms(year: int, state: str, county: str) -> gpd.GeoDataFrame:
-    """Download TIGER/Line tract shapefile, filter to county."""
+def fetch_acs_long_island(year: int, vars_map: dict) -> pd.DataFrame:
+    """Pull ACS variables for Nassau and Suffolk tracts."""
+    parts = [
+        fetch_acs_tract(year, NY_STATE, county, vars_map)
+        for county in COUNTIES
+    ]
+    return pd.concat(parts, ignore_index=True)
+
+
+def fetch_tract_geoms(year: int, state: str, county: str | None = None) -> gpd.GeoDataFrame:
+    """Download TIGER/Line tract shapefile, filter to one county or Long Island."""
     url = f"https://www2.census.gov/geo/tiger/TIGER{year}/TRACT/tl_{year}_{state}_tract.zip"
     local = DATA_RAW / f"tl_{year}_{state}_tract.zip"
     if not local.exists():
@@ -148,16 +161,27 @@ def fetch_tract_geoms(year: int, state: str, county: str) -> gpd.GeoDataFrame:
         r.raise_for_status()
         local.write_bytes(r.content)
     gdf = gpd.read_file(f"zip://{local}")
-    gdf = gdf[gdf["COUNTYFP"] == county].copy()
+    if county:
+        gdf = gdf[gdf["COUNTYFP"] == county].copy()
+    else:
+        gdf = gdf[gdf["COUNTYFP"].isin(COUNTIES)].copy()
+    # TIGER includes water-only census tracts (usually 99xx) in the ocean/sound.
+    # They distort the map and spatial diagnostics, so keep only tracts with land.
+    gdf = gdf[gdf["ALAND"] > 0].copy()
+    gdf["county_name"] = gdf["COUNTYFP"].map(COUNTIES)
     gdf = gdf.to_crs(4326)
     # project to meters for centroid / area work
-    return gdf[["GEOID", "NAMELSAD", "ALAND", "AWATER", "geometry"]]
+    return gdf[["GEOID", "NAMELSAD", "ALAND", "AWATER", "county_name", "geometry"]]
+
+
+def fetch_long_island_tract_geoms(year: int) -> gpd.GeoDataFrame:
+    return fetch_tract_geoms(year, NY_STATE, county=None)
 
 
 # %%
 # Uncomment to run:
-# acs_df = fetch_acs_tract(ACS_YEAR, NASSAU_STATE, NASSAU_COUNTY, ACS_VARS)
-# tracts = fetch_tract_geoms(ACS_YEAR, NASSAU_STATE, NASSAU_COUNTY)
+# acs_df = fetch_acs_long_island(ACS_YEAR, ACS_VARS)
+# tracts = fetch_long_island_tract_geoms(ACS_YEAR)
 # tracts = tracts.merge(acs_df, on="GEOID", how="left")
 
 # %% [markdown]
@@ -256,7 +280,7 @@ def build_acs_rates(tracts: gpd.GeoDataFrame) -> pd.DataFrame:
 
 # %%
 def load_evictions(path: Path | None = None) -> pd.DataFrame:
-    """TODO: replace with real loader. Returns tract-level filing counts for Nassau."""
+    """TODO: replace with real loader. Returns tract-level filing counts."""
     if path and path.exists():
         return pd.read_csv(path, dtype={"GEOID": str})
     # Stub: zero filings so the pipeline runs end-to-end.
@@ -266,11 +290,13 @@ def load_evictions(path: Path | None = None) -> pd.DataFrame:
 def add_eviction_rate(need_df: pd.DataFrame, evictions: pd.DataFrame) -> pd.DataFrame:
     df = need_df.merge(evictions, on="GEOID", how="left")
     df["filings_count"] = df["filings_count"].fillna(0)
-    df["eviction_filing_rate"] = np.divide(df["filings_count"], df["renter_occ"],
-                                           out=np.zeros(len(df)), where=df["renter_occ"] > 0)
+    filings = df["filings_count"].to_numpy(dtype=float)
+    renters = df["renter_occ"].to_numpy(dtype=float)
+    df["eviction_filing_rate"] = np.divide(
+        filings, renters, out=np.zeros(len(df), dtype=float), where=renters > 0
+    )
     # Empirical-Bayes shrinkage for small-N tracts
-    df["eviction_filing_rate_eb"] = _empirical_bayes_rate(df["filings_count"].values,
-                                                          df["renter_occ"].values)
+    df["eviction_filing_rate_eb"] = _empirical_bayes_rate(filings, renters)
     return df
 
 
@@ -333,12 +359,12 @@ def build_need(df: pd.DataFrame, weights: dict | None = None) -> pd.DataFrame:
 
 # %%
 def load_facilities(path: Path | None = None) -> gpd.GeoDataFrame:
-    """TODO: replace with real loader."""
+    """Load the Long Island resource layer."""
     if path and path.exists():
         return gpd.read_file(path).to_crs(4326)
     # Stub — empty with correct schema
     return gpd.GeoDataFrame(
-        {"facility_id": [], "type": [], "capacity": []},
+        {"facility_id": [], "type": [], "capacity": [], "is_access_resource": []},
         geometry=gpd.GeoSeries([], crs=4326),
     )
 
@@ -450,21 +476,30 @@ def run_pipeline(tracts_base: gpd.GeoDataFrame,
     rates = build_need(rates, cfg.need_weights)
 
     # --- access ---
-    if len(facilities) == 0:
+    if "is_access_resource" in facilities.columns:
+        access_facilities = facilities[facilities["is_access_resource"].fillna(False)].copy()
+    else:
+        access_facilities = facilities.copy()
+
+    if len(access_facilities) == 0:
         rates["access_score"] = 0.0
     else:
         demand = rates[cfg.demand_col].fillna(0).values.astype(float)
-        supply = facilities["capacity"].fillna(1).values.astype(float)
-        tt = travel_time_matrix(tracts_base, facilities, cfg.mode)
+        supply = access_facilities["capacity"].fillna(1).values.astype(float)
+        tt = travel_time_matrix(tracts_base, access_facilities, cfg.mode)
         rates["access_score"] = e2sfca(tt, demand, supply, cfg.catchment_min)
 
     rates["z_access"] = zscore(rates["access_score"].values)
+    # Raw E2SFCA scores are supply/demand ratios and often look tiny. The
+    # index is a 0-100 Long Island percentile for clearer map reading.
+    rates["access_index"] = stats.rankdata(rates["access_score"], method="average") \
+                            / len(rates) * 100
     rates["mismatch_index"] = rates["need_score"] - rates["z_access"]
     # percentile rank (0–100) for easier UI
     rates["mismatch_pct"] = stats.rankdata(rates["mismatch_index"], method="average") \
                             / len(rates) * 100
 
-    merged = tracts_base[["GEOID", "geometry"]].merge(rates, on="GEOID", how="left")
+    merged = tracts_base[["GEOID", "county_name", "geometry"]].merge(rates, on="GEOID", how="left")
     return merged
 
 # %% [markdown]
@@ -489,12 +524,12 @@ def write_outputs(gdf: gpd.GeoDataFrame, tag: str) -> None:
 # Uncomment these to run end-to-end once the external data loaders are wired up.
 
 # %%
-# tracts_base = fetch_tract_geoms(ACS_YEAR, NASSAU_STATE, NASSAU_COUNTY)
-# acs_df      = fetch_acs_tract(ACS_YEAR, NASSAU_STATE, NASSAU_COUNTY, ACS_VARS)
+# tracts_base = fetch_long_island_tract_geoms(ACS_YEAR)
+# acs_df      = fetch_acs_long_island(ACS_YEAR, ACS_VARS)
 # tracts_base = tracts_base.merge(acs_df, on="GEOID", how="left")
 #
-# evictions   = load_evictions(DATA_RAW / "nassau_evictions_2022.csv")
-# facilities  = load_facilities(DATA_RAW / "nassau_facilities.geojson")
+# evictions   = load_evictions(DATA_RAW / "longisland_evictions_2022.csv")
+# facilities  = load_facilities(DATA_PROCESSED / "longisland_facilities.geojson")
 #
 # for mode, catch in [("drive", DRIVE_CATCHMENT_MIN), ("walk", WALK_CATCHMENT_MIN)]:
 #     cfg = PipelineConfig(catchment_min=catch, mode=mode)

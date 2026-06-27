@@ -1,8 +1,7 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'node:path';
 
-// Serve pipeline outputs (../data/processed) and raw facility file
-// (../data/raw/nassau_facilities.geojson) directly from the site root.
+// Serve pipeline outputs (../data/processed) directly from the site root.
 // No copy step needed in dev; `vite build` bundles them into dist/.
 export default defineConfig({
   // GitHub Pages sub-path; set to '/<repo>/' before deploying.

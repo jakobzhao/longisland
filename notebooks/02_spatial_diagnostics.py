@@ -12,7 +12,7 @@
 # ---
 
 # %% [markdown]
-# # Nassau County — Spatial Diagnostics
+# # Long Island — Spatial Diagnostics
 #
 # Runs after `01_access_need_mismatch.py`. Inputs = `data/processed/tracts_{mode}.geojson`
 # produced there; outputs = enriched GeoJSON (LISA labels, Gi* scores) + a
@@ -135,6 +135,9 @@ def global_moran_table(gdf: gpd.GeoDataFrame, weights: dict,
             print(f"[global_moran] skipping missing column: {var}")
             continue
         y = gdf[var].fillna(gdf[var].mean()).values
+        if np.nanstd(y) == 0:
+            print(f"[global_moran] skipping constant column: {var}")
+            continue
         for wname, w in weights.items():
             mi = Moran(y, w, permutations=PERMUTATIONS)
             rows.append({
