@@ -1,4 +1,4 @@
-# Long Island Social Responsibility & Resource Access
+# longisland Social Responsibility & Resource Access
 
 Static spatial-analysis app for evaluating whether basic-needs and homelessness-related resources across suburban Long Island are visible, reachable, and aligned with high-need communities.
 
